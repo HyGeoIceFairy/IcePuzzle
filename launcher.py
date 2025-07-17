@@ -83,7 +83,7 @@ class UpdateGUI(tk.Tk):
         self.geometry("400x150")
         self.resizable(False, False)
 
-        self.label = ttk.Label(self, text="Check Update")
+        self.label = ttk.Label(self, text="Automatically start updater.")
         self.label.pack(pady=10)
 
         self.progress = ttk.Progressbar(self, length=350, mode="determinate")
