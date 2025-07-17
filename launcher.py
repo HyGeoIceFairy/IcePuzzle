@@ -4,6 +4,7 @@ import requests
 import zipfile
 import io
 import json
+import subprocess
 from pathlib import Path
 import sys
 import platform
@@ -64,6 +65,15 @@ def verify_zip(file_like):
 def extract_update(file_like):
     with zipfile.ZipFile(file_like) as zf:
         zf.extractall(PROJECT_ROOT)
+  
+        
+def restart_main():
+    main_exe = PROJECT_ROOT / "main.exe"
+    if main_exe.exists():
+        subprocess.Popen([str(main_exe)])
+    else:
+        messagebox.showwarning("Warning", "Cannot find \"main.exe\". Please restart manually.")
+    sys.exit(0)
 
 
 class UpdateGUI(tk.Tk):
@@ -113,6 +123,7 @@ class UpdateGUI(tk.Tk):
                 if verify_zip(buf):
                     extract_update(buf)
                     messagebox.showinfo("Success", "Succeeded. Restrat the program.")
+                    restart_main()
                 else:
                     messagebox.showerror("Error", "Failed to verify the zip.")
             else:
