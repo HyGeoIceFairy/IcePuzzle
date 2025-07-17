@@ -8,8 +8,8 @@ from pathlib import Path
 import sys
 import platform
 
-SERVER_VERSION_URL = "https://raw.githubusercontent.com/HyGeoIceFairy/Program/refs/heads/main/IcePuzzle/version.json?token=GHSAT0AAAAAAC7WX3CAECDLA5VTXR4QEA3C2DYYXXQ"
-UPDATE_ZIP_URL = "https://example.com/update.zip"
+SERVER_VERSION_URL = "https://raw.githubusercontent.com/HyGeoIceFairy/IcePuzzle/refs/heads/main/version.json"
+UPDATE_ZIP_URL = "https://github.com/HyGeoIceFairy/IcePuzzle/releases/download/v0.1.0/IcePuzzle.zip"
 
 PROJECT_ROOT = Path(__file__).parent
 LOCAL_VERSION_FILE = PROJECT_ROOT / "version.json"
@@ -27,7 +27,7 @@ def get_server_version():
         r = requests.get(SERVER_VERSION_URL, timeout=10)
         r.raise_for_status()
         data = r.json()
-        return data.get("version"), data.get("changelog", [])
+        return data.get("version"), data.get("changeLog", [])
     except Exception as e:
         return None, []
 
@@ -96,34 +96,33 @@ class UpdateGUI(tk.Tk):
         server_version, changelog = get_server_version()
 
         if server_version is None:
-            messagebox.showerror("Error", "无法连接服务器获取版本信息！")
+            messagebox.showerror("Error", "Cannot connect to the server. Maybe you can try VPN.")
             self.update_button.config(state="normal")
             return
 
         if local_version is None or compare_versions(local_version, server_version):
-            # 有更新
-            if messagebox.askyesno("更新提示",
-                                   f"检测到新版本：{server_version}\n更新日志：\n" + "\n".join(changelog) + "\n是否下载更新？"):
+            if messagebox.askyesno("Update tips:",
+                                   f"New version detected: {server_version}\nChangelog:\n" + "\n".join(changelog) + "\nDownload?"):
                 try:
                     buf = download_update(self.progress_update)
                 except Exception as e:
-                    messagebox.showerror("错误", f"下载失败：{e}")
+                    messagebox.showerror("Error", f"Failed to download.\n{e}")
                     self.update_button.config(state="normal")
                     return
 
                 if verify_zip(buf):
                     extract_update(buf)
-                    messagebox.showinfo("成功", "更新完成，请重启程序！")
+                    messagebox.showinfo("Success", "Succeeded. Restrat the program.")
                 else:
-                    messagebox.showerror("错误", "下载的更新包校验失败！")
+                    messagebox.showerror("Error", "Failed to verify the zip.")
             else:
-                self.label.config(text="用户取消更新。")
+                self.label.config(text="Update cancelled.")
         else:
-            messagebox.showinfo("提示", "当前已经是最新版本！")
+            messagebox.showinfo("Tip", "You have the latest version!")
 
         self.update_button.config(state="normal")
         self.progress["value"] = 0
-        self.label.config(text="检查更新完成。")
+        self.label.config(text="Succeeded to check update.")
 
 
 if __name__ == "__main__":
