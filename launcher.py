@@ -5,18 +5,18 @@ import zipfile
 import io
 import json
 import subprocess
-from pathlib import Path
+import os
 import sys
 import platform
 
 SERVER_VERSION_URL = "https://raw.githubusercontent.com/HyGeoIceFairy/IcePuzzle/refs/heads/main/version.json"
 UPDATE_ZIP_URL = "https://github.com/HyGeoIceFairy/IcePuzzle/releases/download/v0.1.0/IcePuzzle.zip"
 
-PROJECT_ROOT = Path(__file__).parent
-LOCAL_VERSION_FILE = PROJECT_ROOT / "version.json"
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+LOCAL_VERSION_FILE = os.path.join(PROJECT_ROOT, "version.json")
 
 def get_local_version():
-    if not LOCAL_VERSION_FILE.exists():
+    if not os.path.exists(LOCAL_VERSION_FILE):
         return None
     with open(LOCAL_VERSION_FILE, "r", encoding="utf-8") as f:
         data = json.load(f)
@@ -67,13 +67,12 @@ def extract_update(file_like):
         zf.extractall(PROJECT_ROOT)
   
         
-def restart_main():
-    main_exe = PROJECT_ROOT / "main.exe"
-    if main_exe.exists():
+def start_main():
+    main_exe = os.path.join(PROJECT_ROOT, "main.exe")
+    if os.path.exists(main_exe):
         subprocess.Popen([str(main_exe)])
     else:
-        messagebox.showwarning("Warning", "Cannot find \"main.exe\". Please restart manually.")
-    sys.exit(0)
+        messagebox.showwarning("Warning", "Cannot find \"main.exe\". Please start manually.")
 
 
 class UpdateGUI(tk.Tk):
@@ -122,14 +121,15 @@ class UpdateGUI(tk.Tk):
 
                 if verify_zip(buf):
                     extract_update(buf)
-                    messagebox.showinfo("Success", "Succeeded. Restrat the program.")
-                    restart_main()
+                    messagebox.showinfo("Success", "Succeeded. Restart the program.")
+                    start_main()
                 else:
                     messagebox.showerror("Error", "Failed to verify the zip.")
             else:
                 self.label.config(text="Update cancelled.")
         else:
             messagebox.showinfo("Tip", "You have the latest version!")
+            start_main()
 
         self.update_button.config(state="normal")
         self.progress["value"] = 0
