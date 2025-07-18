@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, filedialog
 import requests
 import zipfile
 import io
@@ -12,8 +12,14 @@ import platform
 SERVER_VERSION_URL = "https://raw.githubusercontent.com/HyGeoIceFairy/IcePuzzle/refs/heads/main/version.json"
 UPDATE_ZIP_URL = "https://github.com/HyGeoIceFairy/IcePuzzle/releases/download/v0.1.0/IcePuzzle.zip"
 
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+if getattr(sys, 'frozen', False):
+    PROJECT_ROOT = os.path.dirname(sys.executable)
+    os.chdir(PROJECT_ROOT)
+else:
+    PROJECT_ROOT = os.path.dirname(__file__)
+    os.chdir(PROJECT_ROOT)
 LOCAL_VERSION_FILE = os.path.join(PROJECT_ROOT, "version.json")
+
 
 def get_local_version():
     if not os.path.exists(LOCAL_VERSION_FILE):
@@ -65,14 +71,15 @@ def verify_zip(file_like):
 def extract_update(file_like):
     with zipfile.ZipFile(file_like) as zf:
         zf.extractall(PROJECT_ROOT)
-  
-        
+
+
 def start_main():
     main_exe = os.path.join(PROJECT_ROOT, "main.exe")
     if os.path.exists(main_exe):
-        subprocess.Popen([str(main_exe)])
+        subprocess.Popen(["cmd", "/c", "start", "", str(main_exe)], shell=True)
     else:
-        messagebox.showwarning("Warning", "Cannot find \"main.exe\". Please start manually.")
+        messagebox.showwarning(
+            "Warning", "Cannot find \"main.exe\". Please start manually.")
 
 
 class UpdateGUI(tk.Tk):
@@ -105,7 +112,8 @@ class UpdateGUI(tk.Tk):
         server_version, changelog = get_server_version()
 
         if server_version is None:
-            messagebox.showerror("Error", "Cannot connect to the server. Maybe you can try VPN.")
+            messagebox.showerror(
+                "Error", "Cannot connect to the server. Maybe you can try VPN.")
             self.update_button.config(state="normal")
             return
 
@@ -121,7 +129,8 @@ class UpdateGUI(tk.Tk):
 
                 if verify_zip(buf):
                     extract_update(buf)
-                    messagebox.showinfo("Success", "Succeeded. Restart the program.")
+                    messagebox.showinfo(
+                        "Success", "Succeeded. Restart the program.")
                     start_main()
                 else:
                     messagebox.showerror("Error", "Failed to verify the zip.")
