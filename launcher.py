@@ -121,6 +121,7 @@ class UpdateGUI(tk.Tk):
             if messagebox.askyesno("Update tips:",
                                    f"New version detected: {server_version}\nChangelog:\n" + "\n".join(changelog) + "\nDownload?"):
                 try:
+                    self.label.config(text="")
                     buf = download_update(self.progress_update)
                 except Exception as e:
                     messagebox.showerror("Error", f"Failed to download.\n{e}")

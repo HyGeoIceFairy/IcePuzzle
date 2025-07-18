@@ -1,6 +1,8 @@
 {
-    "version": "0.1.0",
+    "version": "0.1.1",
     "changeLog": [
-        "This is a test."
+        "Release part 1.",
+        "Improve download logic.",
+        "Fix updater text error."
     ]
 }
