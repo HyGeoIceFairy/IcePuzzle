@@ -10,7 +10,7 @@ import sys
 import platform
 
 SERVER_VERSION_URL = "https://raw.githubusercontent.com/HyGeoIceFairy/IcePuzzle/refs/heads/main/version.json"
-UPDATE_ZIP_URL = "https://github.com/HyGeoIceFairy/IcePuzzle/releases/download/v0.1.0/IcePuzzle.zip"
+UPDATE_ZIP_URL = "https://github.com/HyGeoIceFairy/IcePuzzle/releases/download/v0.1.1/IcePuzzle.zip"
 
 if getattr(sys, 'frozen', False):
     PROJECT_ROOT = os.path.dirname(sys.executable)
