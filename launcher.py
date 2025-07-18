@@ -10,7 +10,7 @@ import sys
 import platform
 
 SERVER_VERSION_URL = "https://raw.githubusercontent.com/HyGeoIceFairy/IcePuzzle/refs/heads/main/version.json"
-UPDATE_ZIP_URL = "https://github.com/HyGeoIceFairy/IcePuzzle/releases/download/v0.1.1/IcePuzzle.zip"
+UPDATE_ZIP_URL = "https://github.com/HyGeoIceFairy/IcePuzzle/releases/download/v0.1.0/IcePuzzle.zip"
 
 if getattr(sys, 'frozen', False):
     PROJECT_ROOT = os.path.dirname(sys.executable)
@@ -89,7 +89,10 @@ class UpdateGUI(tk.Tk):
         self.geometry("400x150")
         self.resizable(False, False)
 
-        self.label = ttk.Label(self, text="Automatically start updater.")
+        bg_color = self.cget("bg")
+
+        self.label = tk.Label(
+            self, text="Automatically start updater.", bg=bg_color, width=50, anchor="center")
         self.label.pack(pady=10)
 
         self.progress = ttk.Progressbar(self, length=350, mode="determinate")
@@ -121,7 +124,6 @@ class UpdateGUI(tk.Tk):
             if messagebox.askyesno("Update tips:",
                                    f"New version detected: {server_version}\nChangelog:\n" + "\n".join(changelog) + "\nDownload?"):
                 try:
-                    self.label.config(text="")
                     buf = download_update(self.progress_update)
                 except Exception as e:
                     messagebox.showerror("Error", f"Failed to download.\n{e}")
