@@ -1,0 +1,1 @@
+You might need [THBWiki](https://thwiki.cc/), [Touhou Wiki](https://en.touhouwiki.net/) or search engines for help, because all the puzzles in this part have something to do with Touhou.

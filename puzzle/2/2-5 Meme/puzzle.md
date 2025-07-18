@@ -1,0 +1,1 @@
+What is the common ground?
