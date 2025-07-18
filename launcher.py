@@ -10,7 +10,8 @@ import sys
 import platform
 
 SERVER_VERSION_URL = "https://raw.githubusercontent.com/HyGeoIceFairy/IcePuzzle/refs/heads/main/version.json"
-UPDATE_ZIP_URL = "https://github.com/HyGeoIceFairy/IcePuzzle/releases/download/v0.1.1/IcePuzzle.zip"
+UPDATE_ZIP_URL_HEAD = "https://github.com/HyGeoIceFairy/IcePuzzle/releases/download/v"
+UPDATE_ZIP_URL_END = "/IcePuzzle.zip"
 
 if getattr(sys, 'frozen', False):
     PROJECT_ROOT = os.path.dirname(sys.executable)
@@ -43,7 +44,8 @@ def compare_versions(local, server):
     return local != server
 
 
-def download_update(progress_callback):
+def download_update(progress_callback, version):
+    UPDATE_ZIP_URL = UPDATE_ZIP_URL_HEAD + version + UPDATE_ZIP_URL_END
     r = requests.get(UPDATE_ZIP_URL, stream=True)
     r.raise_for_status()
     total_length = int(r.headers.get('content-length', 0))
@@ -113,6 +115,7 @@ class UpdateGUI(tk.Tk):
         self.update_button.config(state="disabled")
         local_version = get_local_version()
         server_version, changelog = get_server_version()
+        SERVER_VERSION = server_version
 
         if server_version is None:
             messagebox.showerror(
@@ -124,7 +127,7 @@ class UpdateGUI(tk.Tk):
             if messagebox.askyesno("Update tips:",
                                    f"New version detected: {server_version}\nChangelog:\n" + "\n".join(changelog) + "\nDownload?"):
                 try:
-                    buf = download_update(self.progress_update)
+                    buf = download_update(self.progress_update, server_version)
                 except Exception as e:
                     messagebox.showerror("Error", f"Failed to download.\n{e}")
                     self.update_button.config(state="normal")
