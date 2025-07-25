@@ -1,6 +1,6 @@
 *Cirno: Where is the ```Ebjebsbcpudij```?*
 
-*Letty: I don't know. Which work did the strange word appear in? Is it ```UI23.4```? I cannot remember its full name.*
+*Letty: I don't know. Which work did the strange word appear in? Is it ```UI23.4```? I cannot remember its full name. Forget about the useless parts.*
 
 ---
 

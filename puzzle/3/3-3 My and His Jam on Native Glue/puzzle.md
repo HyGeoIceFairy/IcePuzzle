@@ -1,4 +1,4 @@
-*How to slove this puzzle? Maybe... "You need code". Why? Because **you plus one filling zero** on the **east** will be the one before A.*
+*How to solve this puzzle? Maybe... "You need code". Why? Because **you plus one filling zero** on the **east** will be the one before A.*
 
 *The puzzle author: Sorry for this strange flavor text.*
 
@@ -8,5 +8,5 @@
 
 
 ```
-MXcyejd3M3o2dzZ6
+MW0yejdtM3o2bTZ6
 ```
