@@ -13,3 +13,7 @@
 -I would like to ask how is our steel production capacity so far?
 
 -No more question.
+
+---
+
+*Hint: This is a Chinese meme.*

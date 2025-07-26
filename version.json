@@ -1,7 +1,6 @@
 {
-    "version": "0.1.4",
+    "version": "0.1.5",
     "changeLog": [
-        "Release part 4.",
-        "Fix bugs in part 3."
+        "Release all puzzles."
     ]
 }
